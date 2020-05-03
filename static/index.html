@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home Page</title>
+    <script src="static/submit.js"></script>
+    <script src="static/auth.js"></script>
+  </head>
+  <body>
+    <h1>Home Page</h1>
+    <button type="button" onclick="redirect('/create')">Create a new election</button>
+    <form id="auth-form">
+      <fieldset>
+        <legend>Or enter your details to vote, view results or manage an election</legend>
+        <label for="email">Email</label>
+        <input type="email" name="email" required>
+        <label for="passcode">Passcode</label>
+        <input type="password" name="passcode" required>
+        <label for="election-id">Election ID</label>
+        <input type="number" name="election-id" required>
+        <button type="button"
+          onclick="authenticate('/vote', 'auth-form')">Cast your vote</button>
+        <button type="button"
+          onclick="authenticate('/results', 'auth-form')">View results</button>
+        <button type="button"
+          onclick="authenticate('/edit', 'auth-form')">Edit election</button>
+      </fieldset>
+    </form>
+    <script>document.forms['auth-form'].addEventListener('submit', submit);</script>
+  </body>
+</html>
