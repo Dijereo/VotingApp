@@ -41,7 +41,7 @@ def getUserId():
     user_data = request.get_json()
     election_id = user_data['electionId']
     passcode = user_data['passcode']
-    email == user_data['email']
+    email = user_data['email']
     user = User.query.filter_by(election_id=election_id, email=email).first()
     if not user:
         return 'Election or user not found', 404
@@ -92,7 +92,7 @@ def findVoter(election_id, user_id):
     user = Users.query.get(current_identity.id)
     if not user:
         raise AuthenticationError('Voter not found', 404)
-    if user.election_id != election.id or not user.is_voter
+    if user.election_id != election.id or not user.is_voter:
         raise AuthenticationError('Cannot vote in this election', 401)
     if user.has_voted:
         raise AuthenticationError('Voter already voted', 401)
