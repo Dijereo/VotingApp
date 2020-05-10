@@ -90,3 +90,35 @@ async function loadResults() {
     resultsDiv.innerHTML`</table>`;
   }
 }
+
+async function getBallot() {
+  let token = loadToken();
+  let electionId = loadElectionId();
+  let response = await fetch(
+    `${host}/vote/${electionId}`,
+    {
+      headers: {'Authorization': `JWT ${token}`}
+    }
+  );
+  return response.ok ? response.json() : null;
+}
+
+async function loadBallot() {
+  results = await getBallot();
+  if (results === null) {
+    // This user is not allowed to vote or they were logged out
+    // Add code to notfify them
+    redirect('/');
+  }
+  // Insert code to dipslay the ballot on screen
+  // use results.election to get the election's name
+  for (let position of results.positions) {
+    // loop through each position
+    // use position.title to get the positions name
+    for (let candidate of position.candidates) {
+      // loop through each candidate of the position
+      // use candidate.name to get thecandidate's name
+    }
+  }
+}
+
