@@ -104,7 +104,9 @@ class User(db.Model):
         return check_password_hash(self.passcode, passcode)
 
     def toData(self):
-        return {'id': self.id, 'email': self.email, 'is_voter': self.is_voter,
+        return {'id': self.id,
+                'email': self.email,
+                'is_voter': self.is_voter,
                 'is_admin': self.is_admin}
 
     def toDict(self):

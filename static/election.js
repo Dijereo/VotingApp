@@ -133,8 +133,16 @@ async function getElectionData() {
       headers: {'Authorization': `JWT ${token}`}
     }
   );
-  let result = await response.json();
   if (response.ok) {
+    let result = await response.json();
+    console.log(result);
+    for (let user of result.users) {
+      user.isVoter = user.is_voter;
+      user.isAdmin = user.is_admin;
+    }
+    result.openTime = result.open_time;
+    result.closeTime = result.close_time;
+    result.expireTime = result.expire_time;
     renderElectionData(result, 'edit-form');
   }
 }

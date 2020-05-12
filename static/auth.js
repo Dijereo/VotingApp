@@ -23,8 +23,11 @@ async function obtainUserId(electionId, email, passcode) {
     'electionId': electionId, 'email': email, 'passcode': passcode
   };
   let response = await postJSONData('/', body, false);
-  let result = await response.json();
-  return response.ok ? result.user_id : 0;
+  if (response.ok) {
+    let result = await response.json();
+    return result.user_id;
+  }
+  return 0;
 }
 
 async function obtainToken(userId, passcode) {
@@ -32,8 +35,11 @@ async function obtainToken(userId, passcode) {
     'username': userId, 'password': passcode
   };
   let response = await postJSONData('/auth', body, false);
-  let result = await response.json();
-  return response.ok ? result.access_token : '';
+  if (response.ok) {
+    let result = await response.json();
+    return result.access_token;
+  }
+  return '';
 }
 
 async function authenticate(path, formId) {
