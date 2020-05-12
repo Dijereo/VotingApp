@@ -51,7 +51,8 @@ class Position(db.Model):
     candidates = db.relationship('Candidate', backref='position')
 
     def toData(self):
-        return {'title': self.title,
+        return {'id': self.id,
+                'title': self.title,
                 'candidates': [cand.toData() for cand in self.candidates]}
     
     def toResult(self):
@@ -73,7 +74,7 @@ class Candidate(db.Model):
     votes = db.Column(db.Integer, nullable=False)
 
     def toData(self):
-        return {'name': self.name}
+        return {'id': self.id, 'name': self.name}
 
     def toResult(self):
         return {'name': self.name, 'votes': self.votes}
@@ -103,7 +104,7 @@ class User(db.Model):
         return check_password_hash(self.passcode, passcode)
 
     def toData(self):
-        return {'email': self.email, 'is_voter': self.is_voter,
+        return {'id': self.id, 'email': self.email, 'is_voter': self.is_voter,
                 'is_admin': self.is_admin}
 
     def toDict(self):

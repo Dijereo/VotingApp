@@ -71,7 +71,8 @@ async function getResults() {
       headers: {'Authorization': `JWT ${token}`}
     }
   );
-  return response.ok ? response.json() : null;
+  let result = await response.json();
+  return response.ok ? result : null;
 }
 
 async function loadResults() {
@@ -100,7 +101,8 @@ async function getBallot() {
       headers: {'Authorization': `JWT ${token}`}
     }
   );
-  return response.ok ? response.json() : null;
+  let result = await response.json();
+  return response.ok ? result : null;
 }
 
 async function loadBallot() {
@@ -122,3 +124,17 @@ async function loadBallot() {
   }
 }
 
+async function getElectionData() {
+  let token = loadToken();
+  let electionId = loadElectionId();
+  let response = await fetch(
+    `${host}/edit/${electionId}`,
+    {
+      headers: {'Authorization': `JWT ${token}`}
+    }
+  );
+  let result = await response.json();
+  if (response.ok) {
+    renderElectionData(result, 'edit-form');
+  }
+}

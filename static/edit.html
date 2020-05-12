@@ -2,9 +2,36 @@
 <html>
   <head>
     <title>Edit Page</title>
-    <script src="static/main.js"></script>
+    <script src="static/election.js"></script>
+    <script src="static/submit.js"></script>
+    <script src="static/auth.js"></script>
+    <script src="static/dom.js"></script>
   </head>
   <body>
     <h1>Edit Page</h1>
+    <form id="edit-form">
+      <label>Name of Election</label>
+      <input type="text" name="election">
+      <fieldset id="positions">
+        <legend>Positions</legend>
+      </fieldset>
+      <fieldset id="users">
+        <legend>Users (Observers, Voters and Admins)</legend>
+      </fieldset>
+      <fieldset>
+        <legend>Times</legend>
+        <label>Opening Time</label>
+        <input type="datetime-local" name="open-time">
+        <label>Closing Time</label>
+        <input type="datetime-local" name="close-time">
+        <label>Availability Time</label>
+        <input type="datetime-local" name="expire-time">
+      </fieldset>
+      <button type="button" onclick="editElection('edit-form')">Update Election</button>
+    </form>
   </body>
+  <script>
+    getElectionData();
+  </script>
+  <script>document.forms['edit-form'].addEventListener('submit', submit);</script>
 </html>
