@@ -23,7 +23,8 @@ async function obtainUserId(electionId, email, passcode) {
     'electionId': electionId, 'email': email, 'passcode': passcode
   };
   let response = await postJSONData('/', body, false);
-  return response.ok ? response.user_id : 0;
+  let result = await response.json();
+  return response.ok ? result.user_id : 0;
 }
 
 async function obtainToken(userId, passcode) {
@@ -31,7 +32,8 @@ async function obtainToken(userId, passcode) {
     'username': userId, 'password': passcode
   };
   let response = await postJSONData('/auth', body, false);
-  return response.ok ? response.access_token : '';
+  let result = await response.json();
+  return response.ok ? result.access_token : '';
 }
 
 async function authenticate(path, formId) {
@@ -41,8 +43,9 @@ async function authenticate(path, formId) {
   let passcode = form['passcode'].value;
   let email = form['email'].value;
   let userId = await obtainUserId(electionId, email, passcode);
+  console.log(userId);
   if (userId === 0) {
-    alert('Invalid Data');
+    alert('Invalid Data 1');
     return;
   }
   let token = await obtainToken(userId, passcode);
@@ -50,6 +53,6 @@ async function authenticate(path, formId) {
     setTokenAndId(token, electionId);
     redirect(path);
   } else {
-    alert('Invalid Data');
+    alert('Invalid Data 2');
   }
 }
