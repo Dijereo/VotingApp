@@ -70,7 +70,8 @@ function createUserDOM(user) {
   return userDiv;
 }
 
-function getLocalISODate(date) {
+function getLocalISODate(timestamp) {
+  let data = new Date(timestamp);
   let tz = date.getTimezoneOffset();
   let local = date - tz * 60 * 1000;
   return (new Date(local)).toISOString().slice(0, 16);
@@ -89,7 +90,7 @@ function renderElectionData(electionData, formId) {
   for (let user of electionData.users) {
     userFieldset.appendChild(createUserDOM(user));
   }
-  form['open-time'].value = getLocalISODate(new Date(electionData.openTime));
-  form['close-time'].value = getLocalISODate(new Date(electionData.closeTime));
-  form['expire-time'].value = getLocalISODate(new Date(electionData.expireTime));
+  form['open-time'].value = getLocalISODate(electionData.openTime);
+  form['close-time'].value = getLocalISODate(electionData.closeTime);
+  form['expire-time'].value = getLocalISODate(electionData.expireTime);
 }

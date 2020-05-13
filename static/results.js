@@ -1,0 +1,45 @@
+let mockResults = {
+  'election': 'Mock Election',
+  'positions': [
+    { 'title': 'President',
+      'candidates': [
+        {'name': 'John Doe', 'votes': 7},
+        {'name': 'Mary Sue', 'votes': 5}
+      ]
+    },
+    { 'title': 'Vice President',
+      'candidates': [
+        {'name': 'Joe Bob', 'votes': 4},
+        {'name': 'No Confidence', 'votes': 6}
+      ]
+    }
+  ]
+};
+
+async function getResults() {
+  let electionId = sessionStorage.getItem(electionIdLookup);
+  let response = await sendRequest(`/results/${electionId}`, 'GET', null, true);
+  if (response.ok) {
+    let result = await response.json();
+    return result;
+  } else {
+    return null;
+  }
+}
+
+function loadResults(electionData) {
+  if (electionData === null) {
+    alert('Cannot access results');
+    redirect('/');
+  }
+  document.querySelector('#name').innerHTML = electionData.election;
+  let resultsDiv = document.querySelector('#results');
+  resultsDiv.innerHTML = "";
+  for (let position of electionData.positions) {
+    resultsDiv.innerHTML += `<h3>${position.title}</h3><table>`;
+    for (let candidate of position.candidates) {
+      resultsDiv.innerHTML += `<tr><td>${candidate.name}</td><td>${candidate.votes}</td></tr>`;
+    }
+    resultsDiv.innerHTML += `</table>`;
+  }
+}
