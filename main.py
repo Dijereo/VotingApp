@@ -6,7 +6,7 @@ from flask_jwt import JWT, jwt_required, current_identity
 from sqlalchemy.exc import IntegrityError
 
 from models import db, Election, User, Position, Candidate, randString
-from validate import updateElection, validateElection
+from validate import updateElection, validateElection, validateBallot
 from sendcodes import sendEmail
 
 def create_app():
@@ -18,7 +18,6 @@ def create_app():
     return app
 
 app = create_app()
-
 app.app_context().push()
 db.create_all(app=app)
 
@@ -115,10 +114,10 @@ def loadBallot(election_id):
 def castVote(election_id):
     try:
         election, user = findVoter(election_id, current_identity.id)
-        ballot = request.get_json()
-        validateBallot(ballot)
     except Exception as error:
         return error.args
+    ballot = request.get_json()
+    validateBallot(ballot)
     return 'Vote Casted', 200
 
 @app.route('/results', methods=['GET'])

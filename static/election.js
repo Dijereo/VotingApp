@@ -119,7 +119,7 @@ async function loadBallot() {
     // use position.title to get the positions name
     for (let candidate of position.candidates) {
       // loop through each candidate of the position
-      // use candidate.name to get thecandidate's name
+      // use candidate.name to get the candidate's name
     }
   }
 }
@@ -146,7 +146,6 @@ async function getElectionData() {
     renderElectionData(result, 'edit-form');
   }
 }
-
 
 async function editElection(formId) {
   let electionId = loadElectionId()

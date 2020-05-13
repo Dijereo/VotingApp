@@ -112,4 +112,7 @@ def updateElection(data, election):
     election.users += new_users
     db.session.add(election)
     db.session.commit()
-    #sendEmail(codes)
+    sendEmail(codes)
+
+def validateBallot(ballot):
+    pass
