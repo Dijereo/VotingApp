@@ -1,15 +1,14 @@
 import re
 import time
 from datetime import timedelta, datetime
-
-class ValidationError(Exception):
-    pass
+from models import Election, User, Position, Candidate, db
+from sendcodes import sendEmail
 
 email_regex = re.compile(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
 
 def validateEmail(email):
     if email_regex.fullmatch(email) is None:
-        raise ValidationError(f'Invalid email address', 400)
+        raise ValueError()
 
 def validateTimes(open_time, close_time, expire_time):
     open_time = datetime.fromtimestamp(open_time // 1000)
@@ -17,43 +16,97 @@ def validateTimes(open_time, close_time, expire_time):
     expire_time = datetime.fromtimestamp(expire_time // 1000)
     now = datetime.now()
     if open_time < now:
-        raise ValidationError('Opening time must be in future', 400)
-    if open_time - now > timedelta(days=100):
-        raise ValidationError('Opening time cannot be more than 100 days away', 400)
+        open_time = now
+    elif open_time - now > timedelta(days=100):
+        open_time = now + timedelta(days=100)
     if close_time - open_time < timedelta(minutes=5):
-        raise ValidationError('Election must be open for at least 5 minutes', 400)
-    if close_time - open_time > timedelta(days=50):
-        raise ValidationError('Election cannot be open for more than 50 days', 400)
+        close_time = open_time + timedelta(minutes=5)
+    elif close_time - open_time > timedelta(days=50):
+        close_time = open_time + timedelta(days=50)
     if expire_time - close_time < timedelta(hours=1):
-        raise ValidationError('Election must be available for at least an hour', 400)
-    if expire_time - close_time > timedelta(days=366):
-        raise ValidationError('Election cannot be available for more than a year', 400)
+        expire_time = close_time + timedelta(hours=1)
+    elif expire_time - close_time > timedelta(days=366):
+        expire_time  = close_time + timedelta(days=366)
+    return open_time, close_time, expire_time
 
-def validateAttribute(object_, attribute, expected_type):
+def validateElection(data):
     try:
-        value = object_[attribute]
-    except KeyError:
-        raise ValidationError(f'"{attribute}" missing', 400)
-    if type(value) is not expected_type:
-        raise ValidationError(f'"{attribute}" must be type "{expected_type.__name__}"', 400)
-    if expected_type in (str, list) and len(value) == 0:
-        raise ValidationError(f'"{attribute}" must not be empty', 400)
+        data['election'] = str(data.get('election', ''))
+        data['positions'] = list(data.get('positions', []))
+        for pos in data['positions']:
+            pos['title'] = str(pos.get('title', ''))
+            pos['candidates'] = list(pos.get('candidates', []))
+            for cand in pos['candidates']:
+                cand['name'] = str(cand.get('name', ''))
+        emails = set()
+        data['users'] = list(data.get('users', []))
+        users = []
+        for u in data['users']:
+            email = str(u.get('email', ''))
+            validateEmail(email)
+            if email in emails:
+                continue
+            emails.add(email)
+            user = {'email': email}
+            user['is_voter'] = bool(u.get('isVoter', False))
+            user['is_admin'] = bool(u.get('isAdmin', False))
+            users.append(user)
+        data['users'] = users
+        data['open_time'], data['close_time'], data['expire_time'] = validateTimes(
+            int(data.get('openTime', 0)),
+            int(data.get('closeTime', 0)),
+            int(data.get('expireTime', 0)))
+    except Exception as err:
+        print(err.args)
+        return None
+    else:
+        return data
 
-def validateData(data):
-    validateAttribute(data, 'election', str)
-    validateAttribute(data, 'positions', list)
-    for pos in data['positions']:
-        validateAttribute(pos, 'title', str)
-        validateAttribute(pos, 'candidates', list)
-        for cand in pos['candidates']:
-            validateAttribute(cand, 'name', str)
-    validateAttribute(data, 'users', list)
-    for user in data['users']:
-        validateAttribute(user, 'email', str)
-        validateEmail(user['email'])
-        validateAttribute(user, 'isVoter', bool)
-        validateAttribute(user, 'isAdmin', bool)
-    validateAttribute(data, 'openTime', int)
-    validateAttribute(data, 'closeTime', int)
-    validateAttribute(data, 'expireTime', int)
-    validateTimes(data['openTime'], data['closeTime'], data['expireTime'])
+def updateElection(data, election):
+    data = validateElection(data)
+    if data is None:
+        return
+    election.name = data['election']
+    if election.open_time > datetime.now():
+        while len(election.positions) > 0:
+            del election.positions[-1]
+        election.positions = [
+            Position(
+                title=pos['title'],
+                candidates=[
+                    Candidate(name=cand['name'], votes=0)
+                    for cand in pos['candidates']])
+            for pos in data['positions']]
+        election.open_time = data['open_time']
+        election.close_time = data['close_time']
+        election.expire_time = data['expire_time']
+        new_email = set(u['email'] for u in data['users'])
+        kept_users = []
+        while len(election.users) > 1:
+            user = election.users[-1]
+            if user.email in new_emails:
+                kept_users.append(
+                    User(email=user.email,
+                        passcode=user.passcode,
+                        is_voter=user.is_voter,
+                        has_voted=False,
+                        is_admin=user.is_admin))
+            del election.users[-1]
+    else:
+        if data['close_time'] > election.close_time:
+            election.close_time = data['close_time']
+        if data['expire_time'] > election.expire_time:
+            election.expire_time = data['expire_time']
+    db.session.add(election)
+    db.session.commit()
+    print('b')
+    print(election.id)
+    emails = set(user.email for user in election.users)
+    codes = []
+    for user in new_election.users:
+        if user.email not in emails:
+            codes.append(user.setPasscode())
+            print(election.id)
+            print(*(user.election_id for user in election.users))
+    print(election.toDict())
+    #sendEmail(codes)

@@ -90,7 +90,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     election_id = db.Column(db.Integer, db.ForeignKey('election.id'), nullable=False)
     email = db.Column(db.String(50), nullable=False)
-    passcode = db.Column(db.String(12), nullable=False)
+    passcode = db.Column(db.String(512), nullable=False)
     is_voter = db.Column(db.Boolean, nullable=False)
     has_voted = db.Column(db.Boolean, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False)

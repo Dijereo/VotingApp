@@ -140,9 +140,19 @@ async function getElectionData() {
       user.isVoter = user.is_voter;
       user.isAdmin = user.is_admin;
     }
-    result.openTime = result.open_time;
-    result.closeTime = result.close_time;
-    result.expireTime = result.expire_time;
+    result.openTime = result.open_time * 1000;
+    result.closeTime = result.close_time * 1000;
+    result.expireTime = result.expire_time * 1000;
     renderElectionData(result, 'edit-form');
+  }
+}
+
+
+async function editElection(formId) {
+  let electionId = loadElectionId()
+  let electionData = storeElectionData(formId);
+  let response = await putJSONData(`/edit/${electionId}`, electionData, true);
+  if (response.ok) {
+    redirect('/');
   }
 }

@@ -22,3 +22,16 @@ async function postJSONData(path, body, includeToken) {
   let response = await fetch(`${host}${path}`, data);
   return response;
 }
+
+async function putJSONData(path, body, includeToken) {
+  let data = {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(body)
+  }
+  if (includeToken) {
+    data.headers['Authorization'] = `JWT ${loadToken()}`;
+  }
+  let response = await fetch(`${host}${path}`, data);
+  return response;
+}
