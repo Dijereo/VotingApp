@@ -33,13 +33,14 @@ function loadResults(electionData) {
     redirect('/');
   }
   document.querySelector('#election').innerHTML = electionData.election;
-  let resultsDiv = document.querySelector('#results');
-  resultsDiv.innerHTML = "";
+  let resultsHTML = "";
   for (let position of electionData.positions) {
-    resultsDiv.innerHTML += `<h3>${position.title}</h3><table>`;
+    resultsHTML += `<h3>${position.title}</h3><table>`;
     for (let candidate of position.candidates) {
-      resultsDiv.innerHTML += `<tr><td>${candidate.name}</td><td>${candidate.votes}</td></tr>`;
+      resultsHTML += `<tr><td>${candidate.name}</td><td>${candidate.votes}</td></tr>`;
     }
-    resultsDiv.innerHTML += `</table>`;
+    resultsHTML += `</table>`;
   }
+  let resultsDiv = document.querySelector('#results');
+  resultsDiv.innerHTML = resultsHTML;
 }

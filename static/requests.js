@@ -18,7 +18,8 @@ async function sendRequest(path, method, body, includeToken) {
     data.body = JSON.stringify(body);
   }
   if (includeToken) {
-    data.headers['Authorization'] = `JWT ${loadToken()}`;
+    let token = sessionStorage.getItem(tokenLookup);
+    data.headers['Authorization'] = `JWT ${token}`;
   }
   let response = await fetch(`${host}${path}`, data);
   return response;

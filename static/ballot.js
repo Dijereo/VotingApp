@@ -1,4 +1,4 @@
-let mockData = {
+let mockBallot = {
   'election': 'Mock Election',
   'positions': [
     { 'title': 'President',

@@ -14,7 +14,7 @@ function candidateHTML(candidate) {
   return `
     <div class="cand-div">
       ${removeButtonHTML("removeOnClick(this)")}
-      <input type="text" class="cand-input">${candidate.name}</input>
+      <input type="text" class="cand-input" value="${candidate.name}">
     </div>
   `
 }
@@ -34,7 +34,7 @@ function positionHTML(positionData) {
       <div class="cand-list-div">
         <label class="cand-label">Candidates</label>
         ${addButtonHTML("addCandidate(this.parentNode)")}`;
-  for (let candidate of positions.candidates) {
+  for (let candidate of positionData.candidates) {
     html += candidateHTML(candidate);
   }
   html += `</div></div>`;
