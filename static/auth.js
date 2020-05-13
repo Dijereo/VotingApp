@@ -1,5 +1,3 @@
-// Requires submit.js
-
 let tokenLookup = 'user-token';
 let electionIdLookup = 'election-id';
 

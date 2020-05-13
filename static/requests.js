@@ -1,5 +1,3 @@
-// Requires auth.js
-
 let host = 'https://votingtest--dijereo.repl.co';
 
 function submit(event) {

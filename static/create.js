@@ -1,3 +1,8 @@
+let emptyData = {
+  election: '', positions: [], users: [],
+  openTime: Date.now(), closeTime: Date.now(), expireTime: Date.now()
+};
+
 async function postElection(formId, electionData) {
   let response = await sendRequest('/create', 'POST', electionData, false);
   if (response.ok) {

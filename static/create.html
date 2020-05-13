@@ -2,10 +2,13 @@
 <html>
   <head>
     <title>Create Page</title>
-    <script src="static/election.js"></script>
-    <script src="static/requests.js"></script>
     <script src="static/auth.js"></script>
-    <script src="static/dom.js"></script>
+    <script src="static/ballot.js"></script>
+    <script src="static/create.js"></script>
+    <script src="static/readform.js"></script>
+    <script src="static/renderform.js"></script>
+    <script src="static/requests.js"></script>
+    <script src="static/results.js"></script>
   </head>
   <body>
     <h1>Create Page</h1>
@@ -30,6 +33,8 @@
       <button type="button" onclick="postElection('create-form')">Publish Election</button>
     </form>
   </body>
-  <script>renderElectionData(emptyData, 'create-form');</script>
+  <script>
+    renderElectionData(emptyData, 'create-form');
+  </script>
   <script>document.forms['create-form'].addEventListener('submit', submit);</script>
 </html>
