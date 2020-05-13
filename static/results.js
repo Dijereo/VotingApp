@@ -32,7 +32,7 @@ function loadResults(electionData) {
     alert('Cannot access results');
     redirect('/');
   }
-  document.querySelector('#name').innerHTML = electionData.election;
+  document.querySelector('#election').innerHTML = electionData.election;
   let resultsDiv = document.querySelector('#results');
   resultsDiv.innerHTML = "";
   for (let position of electionData.positions) {

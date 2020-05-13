@@ -60,46 +60,6 @@ function readElectionForm(formId) {
   return electionData;
 }
 
-async function getBallot() {
-  let electionId = sessionStorage.getItem(electionIdLookup);
-  let response = await sendRequest(
-    `${host}/vote/${electionId}`,
-    'GET', null, true
-  );
-  if (response.ok) {
-    let result = await response.json();
-    return result;
-  }
-  return null;
-}
-
-function loadBallot(electionData) {
-  if (electionData === null) {
-    // This user is not allowed to vote or they were logged out
-    // Add code to notfify them
-    redirect('/');
-  }
-  // Insert code to dipslay the ballot on screen
-  // use results.election to get the election's name
-  document.querySelector('#name').innerHTML = electionData.election;
-  let resultsDiv = document.querySelector('#results');
-  resultsDiv.innerHTML = "";
-  resultsDiv.innerHTML = `<form id="vote-form"></form>`;
-  for (let position of electionData.positions) {
-    // loop through each position
-    // use position.title to get the positions name
-    resultsDiv.innerHTML += `<h3>${position.title}</h3>`;
-    for (let candidate of position.candidates) {
-      // loop through each candidate of the position
-      // use candidate.name to get thecandidate's name
-      resultsDiv.innerHTML += `<label for="${candidate.name}">${candidate.name}</label>`
-      resultsDiv.innerHTML += `<input type="radio" id="${candidate.name}" value="${candidate.name}"/>`;
-    }
-  }  
-  resultsDiv.innerHTML += `<button type="button" onclick="postElection('vote-form')">Vote</button>`;
-  resultsDiv.innerHTML += `</form>`;
-}
-
 function convertElectionData(electionData) {
   for (let user of electionData.users) {
       user.isVoter = user.is_voter;

@@ -2,9 +2,16 @@
 <html>
   <head>
     <title>Vote Page</title>
-    <script src="static/main.js"></script>
+    <script src="static/requests.js"></script>
+    <script src="static/ballot.js"></script>
   </head>
   <body>
     <h1>Vote Page</h1>
+    <h2 id="election"></h2>
+    <div id="ballot">
+    </div>
   </body>
+  <script>
+    loadBallot(mockData);
+  </script>
 </html>
