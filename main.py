@@ -87,11 +87,11 @@ def findVoter(election_id, user_id):
     election = Election.query.get(election_id)
     if not election:
         raise ValueError('Election not found', 404)
-    user = Users.query.get(current_identity.id)
+    user = Users.query.filter_by(
+        election_id=election_id,
+        id=current_identity.id)
     if not user:
         raise ValueError('Voter not found', 404)
-    if user.election_id != election.id or not user.is_voter:
-        raise PermissionError('Cannot vote in this election', 401)
     if user.has_voted:
         raise PermissionError('Voter already voted', 401)
     if datetime.now() < election.open_time:
@@ -131,6 +131,13 @@ def getResults(election_id):
     election = Election.query.get(election_id)
     if not election:
         return 'Election not found', 404
+    user = User.query.filter_by(
+        election_id=election_id,
+        id=current_identity.id).first()
+    if not user:
+        return 'User not found', 404
+    if election.close_time > datetime.now():
+        return 'Election still open', 401
     return json.dumps(election.toResult()), 200
 
 @app.route('/edit', methods=['GET'])
@@ -143,6 +150,13 @@ def getElectionData(election_id):
     election = Election.query.get(election_id)
     if not election:
         return 'Election not found', 404
+    user = User.query.filter_by(
+        election_id=election_id,
+        id=current_identity.id).first()
+    if not user:
+        return 'User not found', 404
+    if not user.is_admin:
+        return 'Unauthorized', 401
     return json.dumps(election.toData()), 200
 
 @app.route('/edit/<election_id>', methods=['PUT'])
@@ -151,16 +165,26 @@ def editElection(election_id):
     election = Election.query.get(election_id)
     if not election:
         return 'Election not found', 404
+    user = User.query.filter_by(
+        election_id=election_id,
+        id=current_identity.id).first()
+    if not user:
+        return 'User not found', 404
+    if not user.is_admin:
+        return 'Unauthorized', 401
     data = request.get_json()
     updateElection(data, election)
     return 'Election editted', 200
 
 @app.route('/remove/<election_id>', methods=['DELETE'])
-@jwt_required()
 def deleteElection(election_id):
     election = Election.query.get(election_id)
     if not election:
         return 'Election not found', 404
+    if election.expire_time > datetime.now():
+        return 'Cannot delete election', 401
+    db.session.delete(election)
+    db.session.commit()
     return 'Deleted', 204
 
 @app.route('/debug')
