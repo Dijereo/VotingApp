@@ -80,7 +80,7 @@ def updateElection(data, election):
         election.open_time = data['open_time']
         election.close_time = data['close_time']
         election.expire_time = data['expire_time']
-        new_email = set(u['email'] for u in data['users'])
+        new_emails = set(u['email'] for u in data['users'])
         kept_users = []
         while len(election.users) > 1:
             user = election.users[-1]
@@ -92,21 +92,24 @@ def updateElection(data, election):
                         has_voted=False,
                         is_admin=user.is_admin))
             del election.users[-1]
+        election.users = kept_users
     else:
         if data['close_time'] > election.close_time:
             election.close_time = data['close_time']
         if data['expire_time'] > election.expire_time:
             election.expire_time = data['expire_time']
+    old_emails = set(user.email for user in election.users)
+    codes = []
+    new_users = []
+    for user in data['users']:
+        if user['email'] not in old_emails:
+            new_users.append(
+                User(email=user['email'],
+                    is_voter=user['is_voter'],
+                    has_voted=False,
+                    is_admin=user['is_admin']))
+            codes.append(new_users[-1].setPasscode())
+    election.users += new_users
     db.session.add(election)
     db.session.commit()
-    print('b')
-    print(election.id)
-    emails = set(user.email for user in election.users)
-    codes = []
-    for user in new_election.users:
-        if user.email not in emails:
-            codes.append(user.setPasscode())
-            print(election.id)
-            print(*(user.election_id for user in election.users))
-    print(election.toDict())
     #sendEmail(codes)
