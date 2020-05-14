@@ -1,11 +1,11 @@
+from datetime import timedelta
 import json
-from datetime import timedelta, datetime
 
 from flask import Flask, request, render_template, redirect
 from flask_jwt import JWT, jwt_required, current_identity
 from sqlalchemy.exc import IntegrityError
 
-from models import db, Election, User, Position, Candidate, randString
+from models import db, randString
 import validate
 from sendcodes import sendEmail
 import dbproxy
@@ -39,15 +39,12 @@ def index():
 @app.route('/', methods=['POST'])
 def getUserId():
     user_data = request.get_json()
-    election_id = user_data['electionId']
-    passcode = user_data['passcode']
-    email = user_data['email']
-    user = User.query.filter_by(election_id=election_id, email=email).first()
-    if not user:
-        return 'Election or user not found', 404
-    if not user.checkPasscode(passcode):
-        return 'Invalid passcode', 401
-    return json.dumps({'user_id': user.id}), 200
+    try:
+        user_id = dbproxy.getUserId(user_data['electionId'],
+            user_data['email'], user_data['passcode'])
+    except Exception as error:
+        return error.args
+    return json.dumps({'user_id': user_id}), 200
 
 @app.route('/create', methods=['GET'])
 def goToCreatePage():
@@ -55,12 +52,11 @@ def goToCreatePage():
 
 @app.route('/create', methods=['POST'])
 def createElection():
-    data = validateElection(request.get_json())
-    if data is None:
-        return 'Invalid Data', 400
-    success = proxy.newElection(data)
-    if not success:
-        return 'Server Error - Try Again', 500
+    data = request.get_json()
+    try:
+        dbproxy.newElection(data)
+    except Exception as error:
+        return error.args
     return 'Election created', 201
 
 @app.route('/vote', methods=['GET'])

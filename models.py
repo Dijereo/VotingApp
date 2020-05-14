@@ -1,7 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
 import string
 import secrets
+
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
@@ -82,8 +83,7 @@ class Candidate(db.Model):
         return {'name': self.name}
 
     def toDict(self):
-        return {'id': self.id, 'position_id': self.position_id, 'name': self.name,
-                'votes': self.votes}
+        return {'id': self.id, 'position_id': self.position_id, 'name': self.name, 'votes': self.votes}
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -97,15 +97,13 @@ class User(db.Model):
     def setPasscode(self):
         passcode = randString(16)
         self.passcode = generate_password_hash(passcode, method='sha256')
-        return self.email, passcode, self.election_id
+        return passcode
     
     def checkPasscode(self, passcode):
         return check_password_hash(self.passcode, passcode)
 
     def toData(self):
-        return {'email': self.email,
-                'is_voter': self.is_voter,
-                'is_admin': self.is_admin}
+        return {'email': self.email, 'is_voter': self.is_voter, 'is_admin': self.is_admin}
 
     def toDict(self):
         return {'id': self.id, 'election_id': self.election_id, 'email': self.email,

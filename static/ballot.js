@@ -45,6 +45,22 @@ function loadBallot(electionData) {
       resultsDiv.innerHTML += `<input type="radio" id="${candidate.name}" value="${candidate.name}"/>`;
     }
   }  
-  resultsDiv.innerHTML += `<button type="button" onclick="postElection('vote-form')">Vote</button>`;
+  resultsDiv.innerHTML += `<button type="button" onclick="castVote(getBallotData('vote-form'))">Vote</button>`;
   resultsDiv.innerHTML += `</form>`;
+}
+
+function getBallotData(formId) {
+  let form = document.forms[formId];
+  // TODO
+}
+
+async function castVote(ballot) {
+  let electionId = sessionStorage.getItem(electionIdLookup);
+  let response = await sendRequest(`/vote/${electionId}`, 'PUT', ballot, true);
+  if (response.ok) {
+    alert('Election createdVote Cast');
+    redirect('/');
+  } else {
+    alert('Error occured - recheck the data entered');
+  }
 }
