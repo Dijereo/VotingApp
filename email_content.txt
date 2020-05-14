@@ -2,3 +2,4 @@ Hello,
 You have been registered to vote in an election
 Here is your registration information:
 Passcode: {}
+Election ID: {}

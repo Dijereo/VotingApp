@@ -108,10 +108,11 @@ def updateElection(data, election):
                     is_voter=user['is_voter'],
                     has_voted=False,
                     is_admin=user['is_admin']))
-            codes.append(new_users[-1].setPasscode())
+            codes.append((new_users[-1].email, new_users[-1].setPasscode()))
     election.users += new_users
     db.session.add(election)
     db.session.commit()
+    codes = [(email, passcode, election.id) for email, passcode in codes]
     sendEmail(codes)
 
 def validateBallot(ballot):

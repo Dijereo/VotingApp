@@ -72,9 +72,10 @@ def createElection():
         open_time=data['open_time'],
         close_time=data['close_time'],
         expire_time=data['expire_time'])
-    codes = [user.setPasscode() for user in election.users]
+    codes = [(user.email, user.setPasscode()) for user in election.users]
     db.session.add(election)
     db.session.commit()
+    codes = [(email, passcode, election.id) for email, passcode in codes]
     sendEmail(codes)
     return 'Election created', 201
 

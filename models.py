@@ -98,7 +98,7 @@ class User(db.Model):
     def setPasscode(self):
         passcode = randString(16)
         self.passcode = generate_password_hash(passcode, method='sha256')
-        return self.email, passcode
+        return self.email, passcode, self.election_id
     
     def checkPasscode(self, passcode):
         return check_password_hash(self.passcode, passcode)
