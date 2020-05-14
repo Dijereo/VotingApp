@@ -1,3 +1,5 @@
+let MOCK = true;
+
 let host = 'https://votingtest--dijereo.repl.co';
 
 function submit(event) {

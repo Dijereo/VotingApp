@@ -18,6 +18,12 @@
     </div>
   </body>
   <script>
-    loadBallot(mockBallot);
+    if (MOCK) {
+      loadBallot(mockBallot)
+    } else {
+      (async () => {
+        loadBallot(await getBallot());
+      })()
+    }
   </script>
 </html>

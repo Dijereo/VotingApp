@@ -47,7 +47,7 @@ async function getElectionData() {
   }
 }
 
-async function editElection(formId, electionData) {
+async function editElection(electionData) {
   let electionId = sessionStorage.getItem(electionIdLookup);
   let response = await sendRequest(
     `/edit/${electionId}`, 'PUT', electionData, true

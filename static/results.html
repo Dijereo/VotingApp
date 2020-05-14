@@ -18,6 +18,12 @@
     </div>
   </body>
   <script>
-    loadResults(mockResults);
+    if (MOCK) {
+      loadResults(mockResults);
+    } else {
+      (async () => {
+        loadResults(await getResults());
+      })()
+    }
   </script>
 </html>

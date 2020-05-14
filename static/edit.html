@@ -31,11 +31,17 @@
         <label>Availability Time</label>
         <input type="datetime-local" name="expire-time">
       </fieldset>
-      <button type="button" onclick="editElection('edit-form')">Update Election</button>
+      <button type="button" onclick="editElection(readElectionForm('edit-form'))">Update Election</button>
     </form>
   </body>
   <script>
-    renderElectionData(mockElection, "edit-form");
+    document.forms['edit-form'].addEventListener('submit', submit);
+    if (MOCK) {
+      renderElectionData(mockElection, "edit-form");
+    } else {
+      (async () => {
+        renderElectionData(await getElectionData(), "edit-form")
+      })()
+    }
   </script>
-  <script>document.forms['edit-form'].addEventListener('submit', submit);</script>
 </html>
