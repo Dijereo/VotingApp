@@ -71,6 +71,6 @@ async function castVote(ballot) {
     alert('Vote Casted');
     redirect('/');
   } else {
-    alert('Error occured - recheck the data entered');
+    alert(await response.text());
   }
 }
