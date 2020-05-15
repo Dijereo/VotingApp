@@ -28,22 +28,29 @@ async function getBallot() {
 
 function loadBallot(electionData) {
   if (electionData === null) {
-    alert('Cannot access election');
-    redirect('/');
+    alert("Cannot access election");
+    redirect("/");
   }
-  document.querySelector('#election').innerHTML = electionData.election;
-  let resultsDiv = document.querySelector('#ballot');
-  resultsDiv.innerHTML = "";
-  resultsDiv.innerHTML = `<form id="vote-form"></form>`;
+  document.querySelector("#election").innerHTML = electionData.election;
+  let ballotDiv = document.querySelector("#ballot");
+  let html = "";
+  html = `<form id="vote-form">`;
   for (let position of electionData.positions) {
-    resultsDiv.innerHTML += `<h3>${position.title}</h3>`;
+    html += `<h2 id="pos-title">${position.title}</h2>`;
     for (let candidate of position.candidates) {
-      resultsDiv.innerHTML += `<label for="${candidate.name}">${candidate.name}</label>`
-      resultsDiv.innerHTML += `<input type="radio" id="${candidate.name}" value="${candidate.name}"/>`;
+      html += `
+        <label id="form-label" for="${candidate.name}">
+          <input type="radio" name="${position.title}" id="${candidate.name}"
+            value="${candidate.name}"/>${candidate.name}</label>`;
     }
-  }  
-  resultsDiv.innerHTML += `<button type="button" onclick="castVote(getBallotData('vote-form'))">Vote</button>`;
-  resultsDiv.innerHTML += `</form>`;
+  }
+  html += `
+    </br>
+    <button class="vote-form-button" type="button"
+      onclick="castVote(getBallotData('vote-form'))">Vote</button>`;
+  html += `</form>`;
+  ballotDiv.innerHTML = html;
+  document.forms['vote-form'].addEventListener('submit', submit);
 }
 
 function getBallotData(formId) {
@@ -55,7 +62,7 @@ async function castVote(ballot) {
   let electionId = sessionStorage.getItem(electionIdLookup);
   let response = await sendRequest(`/vote/${electionId}`, 'PUT', ballot, true);
   if (response.ok) {
-    alert('Election createdVote Cast');
+    alert('Vote Casted');
     redirect('/');
   } else {
     alert('Error occured - recheck the data entered');

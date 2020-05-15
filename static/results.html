@@ -2,6 +2,8 @@
 <html>
   <head>
     <title>Results Page</title>
+    <link rel="stylesheet" href="static/style.css" />
+    <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="static/auth.js"></script>
     <script src="static/ballot.js"></script>
     <script src="static/create.js"></script>
@@ -12,18 +14,38 @@
     <script src="static/results.js"></script>
   </head>
   <body>
-    <h1>Results Page</h1>
-    <h2 id="election"></h2>
-    <div id="results">
+    <nav>
+      <div class="header">
+        <h4 class="title">Voting Application</h4>
+      </div>
+      <ul class="nav-items">
+        <li>Tutorial</li>
+        <li>Github</li>
+        <li>
+          <button
+            type="button"
+            class="create-button"
+            onclick="redirect('/create.html')"
+          >
+            Create Election
+          </button>
+        </li>
+      </ul>
+    </nav>
+    <div class="form-div">
+      <div class="results-form">
+        <h1>Results Page</h1>
+        <h2 id="election"></h2>
+        <div id="results"></div>
+        <div id="container"></div>
+      </div>
     </div>
   </body>
   <script>
     if (MOCK) {
       loadResults(mockResults);
     } else {
-      (async () => {
-        loadResults(await getResults());
-      })()
+      (async () => {loadResults(await getResults());})();
     }
   </script>
 </html>

@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Home Page</title>
+    <link rel="stylesheet" href="static/style.css" />
     <script src="static/auth.js"></script>
     <script src="static/ballot.js"></script>
     <script src="static/create.js"></script>
@@ -12,25 +13,59 @@
     <script src="static/results.js"></script>
   </head>
   <body>
-    <h1>Home Page</h1>
-    <button type="button" onclick="redirect('/create')">Create a new election</button>
-    <form id="auth-form">
-      <fieldset>
-        <legend>Or enter your details to vote, view results or manage an election</legend>
-        <label for="email">Email</label>
-        <input type="email" name="email" required>
-        <label for="passcode">Passcode</label>
-        <input type="password" name="passcode" required>
-        <label for="election-id">Election ID</label>
-        <input type="number" name="election-id" required>
-        <button type="button"
-          onclick="authenticate('/vote', 'auth-form')">Cast your vote</button>
-        <button type="button"
-          onclick="authenticate('/results', 'auth-form')">View results</button>
-        <button type="button"
-          onclick="authenticate('/edit', 'auth-form')">Edit election</button>
-      </fieldset>
-    </form>
-    <script>document.forms['auth-form'].addEventListener('submit', submit);</script>
+    <nav>
+      <div class="header">
+        <h4 class="title">Voting Application</h4>
+      </div>
+      <ul class="nav-items">
+        <li>Tutorial</li>
+        <li>Github</li>
+        <li>
+          <button type="button" class="create-button"
+            onclick="redirect('/create.html')"
+          >
+            Create Election
+          </button>
+        </li>
+      </ul>
+    </nav>
+    <div class="form-div">
+      <div class="form-highlight">
+        <h1 class="form-title">Login to Vote for your favourite candidate!</h1>
+        <div class="form-div-2">
+          <form id="auth-form" class="form-class">
+            <label for="email"></label>
+            <input id="form-submit" placeholder="Email"
+              type="email" name="email" required/>
+            <label for="passcode"></label>
+            <input id="form-submit" placeholder="Password"
+              type="password" name="passcode"required/>
+            <label for="election-id"></label>
+            <input id="form-submit" placeholder="Election ID"
+              type="number" name="election-id" required/>
+            <div class="admin-button">
+              <button class="vote-button" type="button"
+                onclick="authenticate('/vote.html', 'auth-form')"
+              >
+                Vote!
+              </button><br/><br/>
+              <button class="vote-button" type="button"
+                onclick="authenticate('/results.html', 'auth-form')"
+              >
+                View results
+              </button><br/><br/>
+              <button class="vote-button" type="button"
+                onclick="authenticate('/edit.html', 'auth-form')"
+              >
+                Edit election
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.forms["auth-form"].addEventListener("submit", submit);
+    </script>
   </body>
 </html>

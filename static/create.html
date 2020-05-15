@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Create Page</title>
+    <link rel="stylesheet" href="static/style.css" />
     <script src="static/auth.js"></script>
     <script src="static/ballot.js"></script>
     <script src="static/create.js"></script>
@@ -12,27 +13,60 @@
     <script src="static/results.js"></script>
   </head>
   <body>
-    <h1>Create Page</h1>
-    <form id="create-form">
-      <label>Name of Election</label>
-      <input type="text" name="election">
-      <fieldset id="positions">
-        <legend>Positions</legend>
-      </fieldset>
-      <fieldset id="users">
-        <legend>Users (Observers, Voters and Admins)</legend>
-      </fieldset>
-      <fieldset>
-        <legend>Times</legend>
-        <label>Opening Time</label>
-        <input type="datetime-local" name="open-time">
-        <label>Closing Time</label>
-        <input type="datetime-local" name="close-time">
-        <label>Availability Time</label>
-        <input type="datetime-local" name="expire-time">
-      </fieldset>
-      <button type="button" onclick="postElection(readElectionForm('create-form'))">Publish Election</button>
-    </form>
+    <nav>
+      <div class="header">
+        <h4 class="title">Voting Application</h4>
+      </div>
+      <ul class="nav-items">
+        <li>Tutorial</li>
+        <li>Github</li>
+      </ul>
+    </nav>
+    <div class="form-div">
+      <div class="form-highlight">
+        <h1 class="form-title">Create Page</h1>
+        <div class="form-div-2">
+          <form id="create-form" class="form-class">
+            <label for="Name of Election"></label>
+            <input id="form-submit" placeholder="Name of Election"
+              type="email" name="election" required/>
+            <fieldset id="positions">
+                <legend>Positions</legend>
+              </fieldset>
+              <fieldset id="users">
+                <legend>Users (Observers, Voters and Admins)</legend>
+              </fieldset>
+            <fieldset>
+                <legend>Times</legend>
+                <label>Opening Time</label>
+                <input type="datetime-local"
+                name="open-time"
+                required
+                />
+                <label>Closing Time</label>
+                <input type="datetime-local"
+                name="close-time"
+                required
+                />
+                <label>Availability Time</label>
+                <input type="datetime-local"
+                name="expire-time"
+                required
+                />
+              </fieldset>
+
+              <br /><br />
+              <button
+              class="vote-button"
+              type="button"
+              onclick="postElection(readElectionForm('create-form'))">
+              Publish Election
+            </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
   <script>
     document.forms['create-form'].addEventListener('submit', submit);

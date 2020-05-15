@@ -1,4 +1,4 @@
-let MOCK = false;
+let MOCK = true;
 
 let host = 'https://votingtest--dijereo.repl.co';
 
@@ -24,7 +24,5 @@ async function sendRequest(path, method, body, includeToken) {
     data.headers['Authorization'] = `JWT ${token}`;
   }
   let response = await fetch(`${host}${path}`, data);
-  console.log(`${host}${path}`);
-  console.log(data);
   return response;
 }

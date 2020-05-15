@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Edit Page</title>
+    <link rel="stylesheet" href="static/style.css" />
     <script src="static/auth.js"></script>
     <script src="static/ballot.js"></script>
     <script src="static/create.js"></script>
@@ -12,27 +13,64 @@
     <script src="static/results.js"></script>
   </head>
   <body>
-    <h1>Edit Page</h1>
-    <form id="edit-form">
-      <label>Name of Election</label>
-      <input type="text" name="election">
-      <fieldset id="positions">
-        <legend>Positions</legend>
-      </fieldset>
-      <fieldset id="users">
-        <legend>Users (Observers, Voters and Admins)</legend>
-      </fieldset>
-      <fieldset>
-        <legend>Times</legend>
-        <label>Opening Time</label>
-        <input type="datetime-local" name="open-time">
-        <label>Closing Time</label>
-        <input type="datetime-local" name="close-time">
-        <label>Availability Time</label>
-        <input type="datetime-local" name="expire-time">
-      </fieldset>
-      <button type="button" onclick="editElection(readElectionForm('edit-form'))">Update Election</button>
-    </form>
+    <nav>
+      <div class="header">
+        <h4 class="title">Voting Application</h4>
+      </div>
+      <ul class="nav-items">
+        <li>Tutorial</li>
+        <li>Github</li>
+      </ul>
+    </nav><div class="form-div">
+      <div class="form-highlight">
+        <h1 class="form-title">Edit Page</h1>
+        <div class="form-div-2">
+          <form id="edit-form" class="form-class">
+            <label for="Name of Election"></label>
+            <input
+              id="form-submit"
+              placeholder="Name of Election"
+              type="text"
+              name="election"
+              required
+            />
+            <fieldset id="positions">
+                <legend>Positions</legend>
+              </fieldset>
+              <fieldset id="users">
+                <legend>Users (Observers, Voters and Admins)</legend>
+              </fieldset>
+            <fieldset>
+                <legend>Times</legend>
+                <label>Opening Time</label>
+                <input type="datetime-local"
+                name="open-time"
+                required
+                />
+                <label>Closing Time</label>
+                <input type="datetime-local"
+                name="close-time"
+                required
+                />
+                <label>Availability Time</label>
+                <input type="datetime-local"
+                name="expire-time"
+                required
+                />
+              </fieldset>
+
+              <br /><br />
+              <button
+              class="vote-button"
+              type="button"
+              onclick="editElection(readElectionForm('edit-form'))">
+              Update Election
+            </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
   <script>
     document.forms['edit-form'].addEventListener('submit', submit);
