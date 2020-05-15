@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  min-height: 100%;
+}
+
 nav {
   display: flex;
   justify-content: space-around;
@@ -17,6 +22,11 @@ nav {
   text-transform: uppercase;
   letter-spacing: 5px;
   font-size: 22px;
+}
+
+.title-link {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit;
 }
 
 .create-button {
@@ -83,7 +93,8 @@ nav {
 }
 
 .form-highlight {
-  height: 100%;
+  position: relative;
+  min-height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.2);
 }
@@ -94,11 +105,11 @@ nav {
 }
 
 .form-div-2 {
-  margin-top: 40px;
+  margin-top: 20%;
   width: 400px;
   height: 400px;
   padding: 40px;
-  position: absolute;
+  position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -253,17 +264,6 @@ table {
   background-color: black;
 }
 
-/**
-.div-contain {
-  display: block;
-  margin-left: 50%;
-  width: 80%;
-  height: 200px;
-  left: 60%;
-  transform: translate(-50%, -50%);
-  background-color: pink;
-}
-**/
 #results {
   position: relative;
   top: 5%;
@@ -272,3 +272,107 @@ table {
 #election {
   margin-bottom: auto;
 }
+
+/**Edit Page Styling**/
+#edit-form,
+#create-form {
+  color: black;
+  position: absolute;
+  right: 0%;
+  width: 100%;
+}
+
+.form-div-edit,
+.form-div-create {
+  margin-top: 5%;
+  width: 400px;
+  height: 100%;
+  min-height: 100%;
+  padding: 40px;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #eeeeee;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+  border-radius: 3px;
+  overflow: auto;
+}
+
+.add-button,
+.remove-button {
+  box-shadow: inset 0px 1px 0px 0px #dcecfb;
+  background: linear-gradient(to bottom, #578fc7 5%, #80b5ea 100%);
+  background-color: #578fc7;
+  border-radius: 42px;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 6px 12px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #1b88f5;
+}
+.add-button:hover,
+.remove-button:hover {
+  background: linear-gradient(to bottom, #80b5ea 5%, #578fc7 100%);
+  background-color: #80b5ea;
+}
+.add-button:active,
+.remove-button:hover {
+  position: relative;
+  top: 1px;
+}
+
+.title-input,
+.form-div-edit input[type="text"],
+.form-div-edit input[type="email"],
+.form-div-create input[type="text"],
+.form-div-create input[type="email"] {
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #3498db;
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: black;
+  border-radius: 24px;
+  transition: 0.25s;
+}
+
+.title-input:focus,
+.form-div-edit input[type="text"]:focus,
+.form-div-edit input[type="email"]:focus,
+.form-div-create input[type="text"]:focus,
+.form-div-create input[type="email"]:focus {
+  width: 280px;
+  border-color: #4e4e4e;
+}
+
+/**Reference for CSS snippet: https://bootsnipp.com/snippets/mvjyq **/
+fieldset {
+  border: 1px solid #ddd !important;
+  margin: 0;
+  padding: 10px;
+  position: relative;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  padding-left: 10px !important;
+}
+
+legend {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 0px;
+  width: 35%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px 5px 5px 10px;
+  background-color: #ffffff;
+}
+/** ---------------------------------------------------------- **/

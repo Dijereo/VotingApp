@@ -16,14 +16,21 @@
   <body>
     <nav>
       <div class="header">
-        <h4 class="title">Voting Application</h4>
+        <a class="title-link" href="" onclick="redirect('/create')"
+          ><h4 class="title">
+            V-Elect
+          </h4></a
+        >
       </div>
       <ul class="nav-items">
         <li>Tutorial</li>
-        <li>Github</li>
+        <a href="https://github.com/Dijereo/VotingApp"><li>Github</li></a>
         <li>
-          <button type="button" class="create-button"
-          onclick="redirect('/create.html')">
+          <button
+            type="button"
+            class="create-button"
+            onclick="redirect('/create')"
+          >
             Create Election
           </button>
         </li>
@@ -42,7 +49,9 @@
     if (MOCK) {
       loadResults(mockResults);
     } else {
-      (async () => {loadResults(await getResults());})();
+      (async () => {
+        loadResults(await getResults());
+      })();
     }
   </script>
 </html>

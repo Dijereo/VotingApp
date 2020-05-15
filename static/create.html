@@ -15,17 +15,30 @@
   <body>
     <nav>
       <div class="header">
-        <h4 class="title">Voting Application</h4>
+        <a class="title-link" href="" onclick="redirect('')"
+          ><h4 class="title">
+            V-Elect
+          </h4></a
+        >
       </div>
       <ul class="nav-items">
         <li>Tutorial</li>
-        <li>Github</li>
+        <a href="https://github.com/Dijereo/VotingApp"><li>Github</li></a>
+        <li>
+          <button
+            type="button"
+            class="create-button"
+            onclick="redirect('/create')"
+          >
+            Create Election
+          </button>
+        </li>
       </ul>
     </nav>
     <div class="form-div">
       <div class="form-highlight">
         <h1 class="form-title">Create Page</h1>
-        <div class="form-div-2">
+        <div class="form-div-create">
           <form id="create-form" class="form-class">
             <label for="Name of Election"></label>
             <input id="form-submit" placeholder="Name of Election"
@@ -42,12 +55,12 @@
                 <input type="datetime-local"
                 name="open-time"
                 required
-                />
+                /></br>
                 <label>Closing Time</label>
                 <input type="datetime-local"
                 name="close-time"
                 required
-                />
+                /></br>
                 <label>Availability Time</label>
                 <input type="datetime-local"
                 name="expire-time"
