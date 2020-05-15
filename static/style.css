@@ -111,7 +111,6 @@ nav {
 .form-div-2 input[type="email"],
 .form-div-2 input[type="password"],
 .form-div-2 input[type="number"] {
-  border: 0;
   background: none;
   display: block;
   margin: 20px auto;

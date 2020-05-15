@@ -55,7 +55,13 @@ function loadBallot(electionData) {
 
 function getBallotData(formId) {
   let form = document.forms[formId];
-  // TODO
+  let ballotData = [];
+  for (let radio of document.getElementsByTagName("input")) {
+    if (radio.checked) {
+      ballotData.push({"title": radio.name, "candidate": radio.value});
+    }
+  }
+  return ballotData;
 }
 
 async function castVote(ballot) {
