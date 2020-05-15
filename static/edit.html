@@ -27,43 +27,27 @@
         <div class="form-div-2">
           <form id="edit-form" class="form-class">
             <label for="Name of Election"></label>
-            <input
-              id="form-submit"
-              placeholder="Name of Election"
-              type="text"
-              name="election"
-              required
-            />
+            <input id="form-submit" placeholder="Name of Election"
+              type="text" name="election" required/>
             <fieldset id="positions">
-                <legend>Positions</legend>
-              </fieldset>
-              <fieldset id="users">
-                <legend>Users (Observers, Voters and Admins)</legend>
-              </fieldset>
+              <legend>Positions</legend>
+            </fieldset>
+            <fieldset id="users">
+              <legend>Users (Observers, Voters and Admins)</legend>
+            </fieldset>
             <fieldset>
-                <legend>Times</legend>
-                <label>Opening Time</label>
-                <input type="datetime-local"
-                name="open-time"
-                required
-                />
-                <label>Closing Time</label>
-                <input type="datetime-local"
-                name="close-time"
-                required
-                />
-                <label>Availability Time</label>
-                <input type="datetime-local"
-                name="expire-time"
-                required
-                />
-              </fieldset>
-
-              <br /><br />
-              <button
-              class="vote-button"
-              type="button"
-              onclick="editElection(readElectionForm('edit-form'))">
+              <legend>Times</legend>
+              <label>Opening Time</label>
+              <input type="datetime-local" name="open-time" required/>
+              <label>Closing Time</label>
+              <input type="datetime-local" name="close-time" required/>
+              <label>Availability Time</label>
+              <input type="datetime-local" name="expire-time" required/>
+            </fieldset>
+            <br/><br/>
+            <button class="vote-button" type="button"
+              onclick="editElection(readElectionForm('edit-form'))"
+            >
               Update Election
             </button>
             </div>
