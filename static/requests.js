@@ -1,4 +1,4 @@
-let MOCK = true;
+let MOCK = false;
 
 let host = 'https://votingtest--dijereo.repl.co';
 

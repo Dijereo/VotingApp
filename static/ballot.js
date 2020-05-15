@@ -58,6 +58,7 @@ function getBallotData(formId) {
   let ballotData = [];
   for (let radio of document.getElementsByTagName("input")) {
     if (radio.checked) {
+      console.log(ballotData);
       ballotData.push({"title": radio.name, "candidate": radio.value});
     }
   }

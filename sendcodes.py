@@ -13,11 +13,16 @@ def sendEmail(users_data, election_id):
     s.login(MY_ADDRESS, PASSWORD)
     for email, passcode in users_data:
         msg = MIMEMultipart()
+        print('msg', msg)
         message = EMAIL_CONTENT.format(passcode, election_id)
+        print('mess', message)
         msg['From'] = MY_ADDRESS
         msg['To'] = email
         msg['Subject'] = 'Election Notification'
+        print('data', msg)
         msg.attach(MIMEText(message, 'plain'))
+        print('att', msg)
         s.send_message(msg)
+        print('Sent')
         del msg
     s.quit()

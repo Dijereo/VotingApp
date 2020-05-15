@@ -32,7 +32,7 @@ def validateTimes(js_open_time, js_close_time, js_expire_time):
     now = datetime.now()
     open_time = validateTime(js_open_time, now, now + timedelta(days=120))
     close_time = validateTime(js_close_time,
-        open_time + timedelta(minutes=5),
+        open_time + timedelta(minutes=0),
         open_time + timedelta(days=120))
     expire_time = validateTime(js_expire_time,
         close_time + timedelta(minutes=5),
@@ -56,12 +56,11 @@ def validateElection(data):
 def validateBallot(ballot):
     try:
         unique_positions = {}
-        ballot['positions'] = list(ballot.get('positions', []))
-        for pos in ballot['positions']:
+        for i, pos in enumerate(ballot):
             pos['title'] = str(pos.get('title'), '')
             pos['candidate'] = str(pos.get('candidate'))
             unique_positions[pos['title']] = pos
-        ballot['positions'] = list(unique_positions.values())
+        ballot = list(unique_positions.values())
     except Exception as error:
         print(error.args)
         raise ValueError('Invalid Data', 500)
@@ -71,7 +70,7 @@ def verifyCandidates(ballot, new_ballot):
     chosen_candidates = {}
     titles = [pos['title'] for pos in new_ballot['positions']]
     print(titles)
-    for pos in ballot['positions']:
+    for pos in ballot:
         try:
             print(pos['title'])
             i = titles.index(pos['title'])

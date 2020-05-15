@@ -52,7 +52,8 @@ def createElection():
     try:
         dbproxy.newElection(data)
     except Exception as error:
-        return error.args
+        raise error
+        #return error.args
     return 'Election created', 201
 
 @app.route('/vote', methods=['GET'])
@@ -116,6 +117,7 @@ def editElection(election_id):
     try:
         dbproxy.updateElection(election_id, current_identity.id, data)
     except Exception as error:
+        print(error.args)
         return error.args
     return 'Election updated', 200
 
@@ -124,6 +126,7 @@ def deleteElection(election_id):
     try:
         dbproxy.deleteElection(election_id)
     except Exception as error:
+        print(error.args)
         return error.args
     return 'Deleted', 204
 

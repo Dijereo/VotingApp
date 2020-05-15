@@ -21,7 +21,8 @@ def getUserId(election_id, email, passcode):
     return user.id
 
 def addNewUsers(election, data, kept_emails):
-    new_users = [User(email=user['email'], is_voter=user['is_voter'],
+    new_users = [User(election_id=election.id,
+        email=user['email'], is_voter=user['is_voter'],
         has_voted=False, is_admin=user['is_admin'])
         for user in data['users'] if user['email'] not in kept_emails]
     election.users += new_users
@@ -30,6 +31,7 @@ def addNewUsers(election, data, kept_emails):
     try:
         sendEmail(email_data, election.id)
     except Exception as error:
+        raise error
         print(error.args)
         db.session.rollback()
         raise RuntimeError('Server not available', 503)
@@ -44,6 +46,8 @@ def newElection(data):
             for pos in data['positions']],
         users=[], open_time=data['open_time'],
         close_time=data['close_time'], expire_time=data['expire_time'])
+    db.session.add(election)
+    db.session.commit()
     addNewUsers(election, data, set())
 
 def findElectionAndUser(election_id, user_id):
@@ -115,7 +119,8 @@ def deleteUnkeptUsers(election, kept_emails):
         old_user = election.users[-1]
         if old_user.email in kept_emails:
             user_new_data = kept_emails[old_user.email]
-            kept_users.append(User(email=old_user.email, passcode=old_user.passcode,
+            kept_users.append(User(election_id=election.id,
+                email=old_user.email, passcode=old_user.passcode,
                 is_voter=user_new_data['is_voter'], has_voted=False,
                 is_admin=user_new_data['is_admin']))
         del election.users[-1]
@@ -123,12 +128,18 @@ def deleteUnkeptUsers(election, kept_emails):
 
 def editElection(election, data, kept_emails):
     election.open_time = data['open_time']
-    while len(election.positions > 0):
+    while len(election.positions) > 0:
         del election.positions[-1]
-    election.positions = [Position(title=pos['title'],
+    db.session.add(election)
+    db.session.commit()
+    print(election.id)
+    election.positions = [Position(election_id=election.id,
+        title=pos['title'],
         candidates=[Candidate(name=cand['name'], votes=0)
             for cand in pos['candidates']])
         for pos in data['positions']]
+    db.session.add(election)
+    db.session.commit()
     deleteUnkeptUsers(election, kept_emails)
     addNewUsers(election, data, kept_emails)
 
