@@ -80,6 +80,7 @@ function getLocalISODate(timestamp) {
 
 function renderElectionData(electionData, formId) {
   let form = document.forms[formId];
+  console.log(electionData);
   form['election'].value = electionData.election;
   let positionDiv = document.querySelector('#positions');
   positionDiv.innerHTML += addButtonHTML("addPosition()");

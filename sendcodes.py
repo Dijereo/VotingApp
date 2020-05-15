@@ -7,11 +7,11 @@ PASSWORD = 'votingapp1'
 with open('email_content.txt') as fp:
     EMAIL_CONTENT = fp.read()
 
-def sendEmail(users_data):
+def sendEmail(users_data, election_id):
     s = smtplib.SMTP(host='smtp-mail.outlook.com', port=587)
     s.starttls()
     s.login(MY_ADDRESS, PASSWORD)
-    for email, passcode, election_id in users_data:
+    for email, passcode in users_data:
         msg = MIMEMultipart()
         message = EMAIL_CONTENT.format(passcode, election_id)
         msg['From'] = MY_ADDRESS

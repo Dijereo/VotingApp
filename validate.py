@@ -30,10 +30,10 @@ def validateTime(js_timestamp, earliest, latest):
 
 def validateTimes(js_open_time, js_close_time, js_expire_time):
     now = datetime.now()
-    open_time = validateTime(js_opentime, now, now + timedelta(days=120))
+    open_time = validateTime(js_open_time, now, now + timedelta(days=120))
     close_time = validateTime(js_close_time,
         open_time + timedelta(minutes=5),
-        open_time + timedelta(says=120))
+        open_time + timedelta(days=120))
     expire_time = validateTime(js_expire_time,
         close_time + timedelta(minutes=5),
         close_time + timedelta(days=120))
@@ -70,15 +70,23 @@ def validateBallot(ballot):
 def verifyCandidates(ballot, new_ballot):
     chosen_candidates = {}
     titles = [pos['title'] for pos in new_ballot['positions']]
+    print(titles)
     for pos in ballot['positions']:
         try:
+            print(pos['title'])
             i = titles.index(pos['title'])
+            print(i)
         except ValueError:
             continue
-        cands = new_ballot['positions'][i]['candidates']
+        cands = [cand['name'] for cand in new_ballot['positions'][i]['candidates']]
+        print(cands)
         try:
+            print(pos['candidate'])
             j = cands.index(pos['candidate'])
+            print(j)
         except ValueError:
             continue
-        chosen_candidates[pos['title']] = pos['candidate']
+        chosen_candidates[titles[i]] = cands[j]
+        print(chosen_candidates)
+    print(chosen_candidates)
     return chosen_candidates

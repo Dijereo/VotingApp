@@ -1,7 +1,16 @@
 from datetime import datetime
 
-from models import Election, Candidate, User, Position
+from models import Election, Candidate, User, Position, db
 import validate
+from sendcodes import sendEmail
+
+def authUser(username, password):
+    user = User.query.get(username)
+    if user and user.checkPasscode(password):
+        return user
+
+def getUser(user_id):
+    return User.query.get(user_id)
 
 def getUserId(election_id, email, passcode):
     user = User.query.filter_by(election_id=election_id, email=email).first()
@@ -15,8 +24,8 @@ def addNewUsers(election, data, kept_emails):
     new_users = [User(email=user['email'], is_voter=user['is_voter'],
         has_voted=False, is_admin=user['is_admin'])
         for user in data['users'] if user['email'] not in kept_emails]
-    election.users += added_users
-    email_data = [(user.email, user.setPasscode()) for user in added_users]
+    election.users += new_users
+    email_data = [(user.email, user.setPasscode()) for user in new_users]
     db.session.add(election)
     try:
         sendEmail(email_data, election.id)
@@ -37,7 +46,7 @@ def newElection(data):
         close_time=data['close_time'], expire_time=data['expire_time'])
     addNewUsers(election, data, set())
 
-def findElectionAndUser(eleciton_id, user_id):
+def findElectionAndUser(election_id, user_id):
     election = Election.query.get(election_id)
     if not election:
         raise ValueError('Election not found', 404)
@@ -48,6 +57,7 @@ def findElectionAndUser(eleciton_id, user_id):
 
 def authorizeVoter(election_id, user_id):
     election, user = findElectionAndUser(election_id, user_id)
+    print(datetime.now(), election.open_time, election.close_time)
     if user.has_voted:
         raise PermissionError('Voter already voted', 401)
     if datetime.now() < election.open_time:
@@ -68,7 +78,7 @@ def castVote(election_id, user_id, ballot):
         position = Position.query.filter_by(
             election_id=election_id,
             title=title).first()
-        candidate = candidate.query.filter_by(
+        candidate = Candidate.query.filter_by(
             position_id=position.id,
             name=cand_name).first()
         candidate.votes += 1
@@ -86,7 +96,7 @@ def getResults(election_id, user_id):
     return election.toResults()
 
 def authorizeAdmin(election_id, user_id):
-    election, user = findElectionAndUser(eleciton_id, user_id):
+    election, user = findElectionAndUser(election_id, user_id)
     if not user.is_admin:
         raise PermissionError('Unauthorized', 401)
     return election, user
@@ -120,7 +130,7 @@ def editElection(election, data, kept_emails):
             for cand in pos['candidates']])
         for pos in data['positions']]
     deleteUnkeptUsers(election, kept_emails)
-    addNewUsers(election, data, kept_emails):
+    addNewUsers(election, data, kept_emails)
 
 def updateElection(election_id, user_id, data):
     data = validate.validateElection(data)
@@ -142,3 +152,6 @@ def deleteElection(election_id):
         raise PermissionError('Cannot delete election', 401)
     db.session.delete(election)
     db.session.commit()
+
+def debug():
+    return [el.toDict() for el in Election.query.all()]

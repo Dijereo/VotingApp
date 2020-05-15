@@ -6,8 +6,6 @@ from flask_jwt import JWT, jwt_required, current_identity
 from sqlalchemy.exc import IntegrityError
 
 from models import db, randString
-import validate
-from sendcodes import sendEmail
 import dbproxy
 
 def create_app():
@@ -23,12 +21,10 @@ app.app_context().push()
 db.create_all(app=app)
 
 def authenticate(username, password):
-    user = User.query.get(username)
-    if user and user.checkPasscode(password):
-        return user
+    return dbproxy.authUser(username, password)
 
 def identity(payload):
-    return User.query.get(payload['identity'])
+    return dbproxy.getUser(payload['identity'])
 
 jwt = JWT(app, authenticate, identity)
 
@@ -69,6 +65,7 @@ def loadBallot(election_id):
     try:
         ballot = dbproxy.getBallot(election_id, current_identity.id)
     except Exception as error:
+        print(error.args)
         return error.args
     else:
         return json.dumps(ballot), 200
@@ -77,12 +74,10 @@ def loadBallot(election_id):
 @jwt_required()
 def castVote(election_id):
     ballot = request.get_json()
-    ballot = validate.validateBallot(ballot)
-    if ballot is None:
-        return 'Invalid Data', 400
     try:
         dbproxy.castVote(election_id, current_identity.id, ballot)
     except Exception as error:
+        print(error.args)
         return error.args
     return 'Vote Casted', 200
 
@@ -109,6 +104,7 @@ def getElectionData(election_id):
     try:
         election = dbproxy.getElectionData(election_id, current_identity.id)
     except Exception as error:
+        print(error.args)
         return error.args
     return json.dumps(election), 200
 
@@ -116,9 +112,10 @@ def getElectionData(election_id):
 @jwt_required()
 def editElection(election_id):
     data = request.get_json()
-    success = dbproxy.updateElection(election_id, user_id, data)
-    if not success:
-        return 'Server Error - Try Again', 500
+    try:
+        dbproxy.updateElection(election_id, current_identity.id, data)
+    except Exception as error:
+        return error.args
     return 'Election updated', 200
 
 @app.route('/remove/<election_id>', methods=['DELETE'])
@@ -131,6 +128,6 @@ def deleteElection(election_id):
 
 @app.route('/debug')
 def debugDB():
-    return json.dumps([el.toDict() for el in Election.query.all()]), 200
+    return json.dumps(dbproxy.debug()), 200
 
 app.run(host='0.0.0.0', port=8080)

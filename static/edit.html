@@ -40,7 +40,9 @@
       renderElectionData(mockElection, "edit-form");
     } else {
       (async () => {
-        renderElectionData(await getElectionData(), "edit-form")
+        let data = await getElectionData();
+        console.log(data);
+        renderElectionData(data, "edit-form");
       })()
     }
   </script>

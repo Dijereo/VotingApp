@@ -18,10 +18,7 @@ let mockBallot = {
 
 async function getBallot() {
   let electionId = sessionStorage.getItem(electionIdLookup);
-  let response = await sendRequest(
-    `${host}/vote/${electionId}`,
-    'GET', null, true
-  );
+  let response = await sendRequest(`/vote/${electionId}`, 'GET', null, true);
   if (response.ok) {
     let result = await response.json();
     return result;

@@ -34,6 +34,7 @@ function convertElectionData(electionData) {
   electionData.openTime = electionData.open_time * 1000;
   electionData.closeTime = electionData.close_time * 1000;
   electionData.expireTime = electionData.expire_time * 1000;
+  return electionData;
 }
 
 async function getElectionData() {
@@ -44,7 +45,10 @@ async function getElectionData() {
   if (response.ok) {
     let electionData = await response.json();
     electionData = convertElectionData(electionData);
+    console.log(electionData);
+    return electionData;
   }
+  return null;
 }
 
 async function editElection(electionData) {
