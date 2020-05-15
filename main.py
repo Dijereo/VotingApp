@@ -91,6 +91,7 @@ def getResults(election_id):
     try:
         results = dbproxy.getResults(election_id, current_identity.id)
     except Exception as error:
+        print(error.args)
         return error.args
     return json.dumps(results), 200
 

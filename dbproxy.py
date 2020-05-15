@@ -88,12 +88,12 @@ def castVote(election_id, user_id, ballot):
     db.session.commit()
 
 def getResults(election_id, user_id):
-    election, _ = findElectionAndUser(election_is, user_id)
+    election, _ = findElectionAndUser(election_id, user_id)
     if election.close_time > datetime.now():
         raise PermissionError('Election still open', 401)
     if election.expire_time < datetime.now():
         raise PermissionError('Election was deleted', 410)
-    return election.toResults()
+    return election.toResult()
 
 def authorizeAdmin(election_id, user_id):
     election, user = findElectionAndUser(election_id, user_id)
