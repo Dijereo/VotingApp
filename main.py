@@ -11,7 +11,7 @@ import dbproxy
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-    app.config['SECRET_KEY'] = randString(8)
+    app.config['SECRET_KEY'] = "PLEASEWORK"
     app.config['JWT_EXPIRATION_DELTA'] = timedelta(days=7)
     db.init_app(app)
     return app
@@ -134,4 +134,5 @@ def deleteElection(election_id):
 def debugDB():
     return json.dumps(dbproxy.debug()), 200
 
-app.run(host='0.0.0.0', port=8080)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)

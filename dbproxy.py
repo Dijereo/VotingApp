@@ -15,7 +15,7 @@ def getUser(user_id):
 def getUserId(election_id, email, passcode):
     user = User.query.filter_by(election_id=election_id, email=email).first()
     if not user:
-        raise ValureError('Election or user not found', 404)
+        raise ValueError('Election or user not found', 404)
     if not user.checkPasscode(passcode):
         raise PermissionError('Invalid passcode', 401)
     return user.id
