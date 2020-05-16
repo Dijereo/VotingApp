@@ -17,7 +17,7 @@ let mockResults = {
 };
 
 async function getResults() {
-  let electionId = sessionStorage.getItem(electionIdLookup);
+  let electionId = localStorage.getItem(electionIdLookup);
   let response = await sendRequest(`/results/${electionId}`, 'GET', null, true);
   if (response.ok) {
     let result = await response.json();

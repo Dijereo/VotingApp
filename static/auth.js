@@ -39,8 +39,8 @@ async function authenticate(path, formId) {
   }
   let token = await obtainToken(userId, passcode);
   if (token) {
-    sessionStorage.setItem(tokenLookup, token);
-    sessionStorage.setItem(electionIdLookup, electionId);
+    localStorage.setItem(tokenLookup, token);
+    localStorage.setItem(electionIdLookup, electionId);
     redirect(path);
   } else {
     alert('Incorrect passcode');

@@ -38,7 +38,7 @@ function convertElectionData(electionData) {
 }
 
 async function getElectionData() {
-  let electionId = sessionStorage.getItem(electionIdLookup);
+  let electionId = localStorage.getItem(electionIdLookup);
   let response = await sendRequest(
     `/edit/${electionId}`, 'GET', null, true
   );
@@ -52,7 +52,7 @@ async function getElectionData() {
 }
 
 async function editElection(electionData) {
-  let electionId = sessionStorage.getItem(electionIdLookup);
+  let electionId = localStorage.getItem(electionIdLookup);
   let response = await sendRequest(
     `/edit/${electionId}`, 'PUT', electionData, true
   );

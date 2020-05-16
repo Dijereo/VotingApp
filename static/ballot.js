@@ -17,7 +17,7 @@ let mockBallot = {
 };
 
 async function getBallot() {
-  let electionId = sessionStorage.getItem(electionIdLookup);
+  let electionId = localStorage.getItem(electionIdLookup);
   let response = await sendRequest(`/vote/${electionId}`, 'GET', null, true);
   if (response.ok) {
     let result = await response.json();
@@ -66,7 +66,7 @@ function getBallotData(formId) {
 }
 
 async function castVote(ballot) {
-  let electionId = sessionStorage.getItem(electionIdLookup);
+  let electionId = localStorage.getItem(electionIdLookup);
   let response = await sendRequest(`/vote/${electionId}`, 'PUT', ballot, true);
   if (response.ok) {
     alert('Vote Casted');
