@@ -1,6 +1,6 @@
 let MOCK = false;
 
-let host = window.location.origin;
+let host = 'https://enigmatic-basin-07183.herokuapp.com';
 
 function submit(event) {
   event.preventDefault();
