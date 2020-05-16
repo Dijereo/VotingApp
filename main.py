@@ -134,4 +134,5 @@ def deleteElection(election_id):
 def debugDB():
     return json.dumps(dbproxy.debug()), 200
 
-app.run(host='0.0.0.0', port=8080)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
