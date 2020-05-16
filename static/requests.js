@@ -1,6 +1,6 @@
 let MOCK = false;
 
-let host = 'https://votingtest--dijereo.repl.co';
+let host = window.location.origin;
 
 function submit(event) {
   event.preventDefault();
