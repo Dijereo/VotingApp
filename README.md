@@ -5,7 +5,7 @@ This a web based polling platform designed with university club elections in min
 ## Built With
 
 * [Firebase](https://firebase.google.com/) - the hosting technology used
-* [Webapp](https://v-elect-96278.web.app/) - Link to webapp
+* [Webapp](https://enigmatic-basin-07183.herokuapp.com/) - Link to webapp
 * [Testing Environment](https://votingtest--dijereo.repl.co/) - Link to repl where the app was tested
 
 ## Authors
